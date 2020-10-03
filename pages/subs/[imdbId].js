@@ -10,6 +10,7 @@ const Subs = ({ mediaData, subtitles }) => {
   const router = useRouter();
   const loading = router.isFallback;
 
+  //TODO: Move to utils
   const minutesToHours = (minutes) => {
     const hours = Math.floor(minutes / 60);
     let formatedMinutes = minutes - (hours * 60);
@@ -73,6 +74,8 @@ const Subs = ({ mediaData, subtitles }) => {
   );
 };
 
+
+
 export async function getStaticPaths() {
   const API_URL = process.env.API_URL || '/';
 
@@ -90,27 +93,27 @@ export async function getStaticPaths() {
 export async function getStaticProps(ctx) {
   const { imdbId } = ctx.params;
   let mediaData = null;
-  let subtitles = null;
 
-  if (imdbId) {
-    const API_URL = process.env.API_URL || '/';
+  // Fetch media data (images, description, etc) based on the imdbId
+  const API_URL = process.env.API_URL || '/';
 
-    const data = await fetch(`${API_URL}/media-items?imdbId=${imdbId}`);
-    mediaData = await data.json().then(res => res ? res[0] : null)
+  // Fetch media data for this page (poster, text, etc)
+  const data = await fetch(`${API_URL}/media-items?imdbId=${imdbId}`);
+  mediaData = await data.json().then(res => res ? res[0] : null);
 
-    const subtitleData = await fetch(`${API_URL}/subtitles?imdbId=${imdbId}`);
-    subtitles = await subtitleData.json();
-    subtitles = subtitles.reduce((acc, subtitle) => {
-      if (!acc[subtitle.provider]) {
-        acc[subtitle.provider] = []
-      }
+  // TODO: Move to constant
+  const providers = ['opensubtitles', 'yts'].map((item) => `provider=${item}`).join('&');
 
-      acc[subtitle.provider].push(subtitle)
-      return acc
-    }, {})
-  }
+  let subtitles = await fetch(`${API_URL}/subtitles?imdbId=${imdbId}&${providers}`).then((res) => res.json());
 
-  console.log('subtitles', subtitles)
+  subtitles = subtitles.reduce((acc, subtitle) => {
+    if (!acc[subtitle.provider]) {
+      acc[subtitle.provider] = []
+    }
+
+    acc[subtitle.provider].push(subtitle)
+    return acc
+  }, {});
 
   return { props: { mediaData, subtitles }, revalidate: 1 };
 }
