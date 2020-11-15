@@ -1,20 +1,65 @@
-import _ from 'lodash'
-import React, { useCallback, useState } from 'react'
+import _ from 'lodash';
+import classNames from 'classnames';
+import { useDropzone } from 'react-dropzone';
+import ptt from 'parse-torrent-title';
+
+import React, { useCallback, useState } from 'react';
 
 const SearchBar = ({ searchCallback }) => {
-    const [inputValue, setInputValue] = useState('')
-    const debouncedSearchCallback = useCallback(_.debounce(searchCallback, 250), []);
+  const [inputValue, setInputValue] = useState('');
+  const [isDragging, setIsDragging] = useState(false);
 
-    const handleInput = (e) => {
-        setInputValue(e.target.value)
-        debouncedSearchCallback(e.target.value)
-    }
+  const { getRootProps, isDragActive } = useDropzone({
+    maxFiles: 1,
+    onDrop: files => handleFileDrop(files),
+  });
 
-    return (
-        <div className="flex border border-gray-200 rounded p-4 shadow text-xl">
-            <input type="text" className="w-full outline-none px-3" placeholder="Find your Show" onChange={handleInput} value={inputValue} />
-        </div>
-    )
-}
+  const debouncedSearchCallback = useCallback(
+    _.debounce(title => searchCallback({ title }), 250),
+    []
+  );
+
+  const handleInput = e => {
+    setInputValue(e.target.value);
+
+    debouncedSearchCallback(e.target.value);
+  };
+
+  const handleFileDrop = files => {
+    const [file] = files;
+
+    const res = ptt.parse(file.name);
+
+    setInputValue(res.title);
+    searchCallback(res);
+  };
+
+  return (
+    <div
+      {...getRootProps({
+        className: classNames([
+          'w-full',
+          'flex',
+          'border',
+          'border-gray-200',
+          'rounded',
+          'p-4',
+          'shadow-lg',
+          'text-xl',
+          isDragActive && 'border-blue-300',
+          isDragActive && 'border-dashed',
+        ]),
+      })}
+    >
+      <input
+        type="text"
+        className="w-full outline-none px-3"
+        placeholder="Enter a name or drop a file to search"
+        onChange={handleInput}
+        value={inputValue}
+      />
+    </div>
+  );
+};
 
 export default SearchBar;

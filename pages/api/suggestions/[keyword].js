@@ -1,13 +1,22 @@
 export default async (req, res) => {
   const {
     query: { keyword },
-  } = req
+  } = req;
 
-  const API_URL = process.env.API_URL || '/'
+  const API_URL = process.env.API_URL || '/';
+  const url = `${API_URL}/suggestions?keyword=${keyword}`;
 
-  const data = await fetch(`${API_URL}/suggestions?keyword=${keyword}`)
-  let result = await data.json()
-  result = result && result[0] && result[0].data ? result[0].data : null
+  console.log('url', url);
 
-  res.json(result)
-}
+  try {
+    let result = await fetch(url).then(data => data.json());
+
+    console.log('result', result);
+
+    result = result && result[0] && result[0].data ? result[0].data : null;
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.json(error);
+  }
+};
