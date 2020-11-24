@@ -38,24 +38,24 @@ const SearchResults = ({ searchData = null, suggestionData = null }) => {
                   src={poster}
                   alt={s.Title}
                 />
-                <div className="md:w-32 border-r border-b border-gray-400 border-t bg-white rounded rounded-tl-none rounded-bl-none p-4 flex flex-col justify-between leading-normal flex-grow">
-                  <div className="text-gray-900 font-bold text-xl mb-1">
+                <div className="md:w-32 border-r border-b border-gray-400 border-t bg-white rounded rounded-tl-none rounded-bl-none p-2 flex flex-col justify-between leading-normal flex-grow">
+                  <div className="text-gray-900 font-bold text-xl mb-1 truncate">
                     {s.Title}
                   </div>
                   <p
-                    className="text-gray-700 text-base"
+                    className="text-gray-700 truncate"
                     style={{ lineClamp: 1 }}
                   >
                     {s.imdbRating}/10
                   </p>
                   <p
-                    className="text-gray-700 text-base"
+                    className="text-gray-700 truncate"
                     style={{ lineClamp: 1 }}
                   >
                     {s.Genre} ({s.Rated})
                   </p>
                   <p
-                    className="text-gray-700 text-base"
+                    className="text-gray-700 truncate"
                     style={{ lineClamp: 1 }}
                   >
                     {s.Year}
