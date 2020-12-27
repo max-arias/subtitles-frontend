@@ -1,16 +1,17 @@
 import { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { Translate } from 'phosphor-react';
+import Tooltip from 'rc-tooltip';
 
 import LanguageFilter from './LanguageFilter';
+
+import 'rc-tooltip/assets/bootstrap_white.css';
 
 const SubsTable = ({ data }) => {
   const [clickedRows, setClickedRows] = useState([]);
   const [showLanguageFilter, setShowLanguageFilter] = useState(false);
 
   const memodData = useMemo(() => data, []);
-
-  console.log({ memodData });
 
   const languageFilterOptions = React.useMemo(() => {
     return [...new Set(memodData.map(item => item.language))].map(item => ({
@@ -20,7 +21,7 @@ const SubsTable = ({ data }) => {
   }, []);
 
   const handleLanguageFilter = values => {
-    console.log(values);
+    //console.log(values);
   };
 
   const handleLinkClick = row => {
@@ -39,19 +40,26 @@ const SubsTable = ({ data }) => {
               <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark">
                 <span>Provider</span>
               </th>
-              <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark w-1/3">
+              <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark">
                 <span>Language</span>
-                <Translate
-                  className="inline pl-2 cursor-pointer"
-                  size={32}
-                  onClick={() => setShowLanguageFilter(!showLanguageFilter)}
-                />
-                {showLanguageFilter && (
-                  <LanguageFilter
-                    options={languageFilterOptions}
-                    setFilter={handleLanguageFilter}
+
+                <Tooltip
+                  className="bg-white"
+                  placement="top"
+                  trigger={['click']}
+                  overlay={
+                    <LanguageFilter
+                      options={languageFilterOptions}
+                      setFilter={handleLanguageFilter}
+                    />
+                  }
+                >
+                  <Translate
+                    className="inline pl-2 cursor-pointer"
+                    size={32}
+                    onClick={() => setShowLanguageFilter(!showLanguageFilter)}
                   />
-                )}
+                </Tooltip>
               </th>
             </tr>
           </thead>

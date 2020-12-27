@@ -1,7 +1,6 @@
 import styles from './Indeterminate.module.css';
 
 const Indeterminate = ({ type = 'bar', text = '' }) => {
-  console.log(type);
   if (type === 'circle') {
     return (
       <div className="relative">

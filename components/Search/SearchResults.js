@@ -30,8 +30,10 @@ const SearchResults = ({ searchData = null, suggestionData = null }) => {
               ? 'https://via.placeholder.com/94x128?text=No+Image'
               : s.Poster;
 
+          const url = s.Type === 'series' ? `series/${s.imdbID}` : s.imdbID;
+
           return (
-            <Link href={`/subs/${s.imdbID}`} key={s.imdbID}>
+            <Link href={`/subs/${url}`} key={s.imdbID}>
               <div className="w-full flex mb-4 cursor-pointer lg:h-32">
                 <img
                   className="h-48 lg:h-32 w-auto flex-none bg-cover rounded-tl rounded-bl text-center overflow-hidden"

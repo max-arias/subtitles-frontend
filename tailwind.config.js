@@ -1,6 +1,10 @@
 module.exports = {
-    purge: ['./components/**/*.js', './pages/**/*.js'],
-    theme: {},
-    variants: {},
-    plugins: [],
+  purge: ['./components/**/*.js', './pages/**/*.js'],
+  theme: {},
+  variants: {
+    extend: {
+      margin: ['last'],
+    },
+  },
+  plugins: [],
 };

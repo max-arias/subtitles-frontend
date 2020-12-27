@@ -1,36 +1,23 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { minutesToHours } from '../../utils/dates';
 
 import IndeterminateLoader from '../../components/Loader/Indeterminate';
 import SubsTable from '../../components/SubsTable';
 
 const Subs = ({ mediaData, subtitles }) => {
-  // const { data, error } = useSWR('/api/user', fetcher)
-
   const router = useRouter();
   const loading = router.isFallback;
 
-  //TODO: Move to utils
-  const minutesToHours = minutes => {
-    if (!minutes) {
-      return '-';
-    }
-
-    const hours = Math.floor(minutes / 60);
-    let formatedMinutes = minutes - hours * 60;
-    formatedMinutes = String(formatedMinutes).padStart(2, '0');
-    return `${hours}h ${formatedMinutes}m`;
-  };
-
   return (
-    <div className="w-full h-screen font-sans">
+    <div className="w-full h-screen font-sans bg-gray-100">
       {loading ? (
         <div className="w-full flex justify-center">
           <IndeterminateLoader />
         </div>
       ) : (
         <div className="grid gap-4 grid-cols-12 p-10">
-          <div className=" pb-0 col-start-2 col-end-4 bg-white-100 rounded flex-col">
+          <div className="pb-0 col-start-1 col-end-12 lg:col-start-2 lg:col-end-4 bg-white-100 rounded flex-col">
             <img
               className="rounded"
               src={`http://image.tmdb.org/t/p/w185/${mediaData.data.poster_path}`}
@@ -43,7 +30,7 @@ const Subs = ({ mediaData, subtitles }) => {
               <p className="mt-2">{mediaData.data.overview}</p>
             </div>
           </div>
-          <div className="col-start-4 col-end-12">
+          <div className="col-start-1 col-end-12 lg:col-start-4 lg:col-end-12">
             <div>
               {/* <IndeterminateLoader type="circle" text="OS" />
                 <IndeterminateLoader type="circle" text="YTS" /> */}
