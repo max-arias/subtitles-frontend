@@ -1,5 +1,3 @@
 # Subgregator Frontend
 
-WIP
-
-docker-compose up to bring up the app
+https://trello.com/b/VxK9FMjo/subs
