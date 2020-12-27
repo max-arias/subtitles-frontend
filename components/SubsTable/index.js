@@ -13,7 +13,7 @@ const SubsTable = ({ data }) => {
 
   const memodData = useMemo(() => data, []);
 
-  const languageFilterOptions = React.useMemo(() => {
+  const languageFilterOptions = useMemo(() => {
     return [...new Set(memodData.map(item => item.language))].map(item => ({
       value: item,
       label: item,
