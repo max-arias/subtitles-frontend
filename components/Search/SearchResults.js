@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const SearchResults = ({ searchData = null, suggestionData = null }) => {
   const [suggestions, setSuggestions] = useState(suggestionData);
@@ -35,7 +36,9 @@ const SearchResults = ({ searchData = null, suggestionData = null }) => {
           return (
             <Link href={`/subs/${url}`} key={s.imdbID}>
               <div className="w-full flex mb-4 cursor-pointer lg:h-32">
-                <img
+                <Image
+                  width="85"
+                  height="128"
                   className="h-48 lg:h-32 w-auto flex-none bg-cover rounded-tl rounded-bl text-center overflow-hidden"
                   src={poster}
                   alt={s.Title}

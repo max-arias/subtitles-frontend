@@ -46,6 +46,7 @@ const SearchBar = ({ searchCallback }) => {
           'p-4',
           'shadow-lg',
           'text-xl',
+          'bg-white',
           isDragActive && 'border-blue-300',
           isDragActive && 'border-dashed',
         ]),
