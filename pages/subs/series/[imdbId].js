@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { minutesToHours } from '../../../utils/dates';
 
 import IndeterminateLoader from '../../../components/Loader/Indeterminate';
@@ -7,6 +8,7 @@ import IndeterminateLoader from '../../../components/Loader/Indeterminate';
 const Subs = ({ mediaData, imdbId }) => {
   const [loading, setLoading] = useState(false);
   const [episodes, setEpisodes] = useState([]);
+  const [selectedSeason, setSelectedSeason] = useState(null);
 
   const fetchEpisodes = async (tvId, seasonNum) => {
     const url = new URL(`${location.origin}/api/tv`);
@@ -16,6 +18,7 @@ const Subs = ({ mediaData, imdbId }) => {
       imdbId,
     }).toString();
 
+    setSelectedSeason(seasonNum);
     setLoading(true);
 
     const data = await fetch(url).then(res => res.json());
@@ -97,28 +100,26 @@ const Subs = ({ mediaData, imdbId }) => {
                     : episode.data.still_path;
 
                 return (
-                  <div
-                    className="w-full flex mb-4 cursor-pointer lg:h-32 last:mb-0"
-                    onClick={() => alert('episode')}
-                    key={episode.id}
-                  >
-                    <Image
-                      width="185"
-                      height="104"
-                      className="h-48 lg:h-32 w-auto flex-none bg-cover rounded-tl rounded-bl text-center overflow-hidden"
-                      src={`https://image.tmdb.org/t/p/w185/${poster}`}
-                      alt={episode.title}
-                    />
-                    <div className="md:w-32 border-r border-b border-gray-400 border-t bg-white rounded rounded-tl-none rounded-bl-none p-2 flex flex-col  flex-grow">
-                      <div className="text-gray-900 font-bold text-xl mb-1">
-                        S{episode.seasonNum}E{episode.episodeNum} -{' '}
-                        {episode.title}
+                  <Link href={`/subs/${imdbId}`} key={episode.id}>
+                    <div className="w-full flex mb-4 cursor-pointer lg:h-32 last:mb-0">
+                      <Image
+                        width="185"
+                        height="104"
+                        className="h-48 lg:h-32 w-auto flex-none bg-cover rounded-tl rounded-bl text-center overflow-hidden"
+                        src={`https://image.tmdb.org/t/p/w185/${poster}`}
+                        alt={episode.title}
+                      />
+                      <div className="md:w-32 border-r border-b border-gray-400 border-t bg-white rounded rounded-tl-none rounded-bl-none p-2 flex flex-col  flex-grow">
+                        <div className="text-gray-900 font-bold text-xl mb-1">
+                          S{episode.seasonNum}E{episode.episodeNum} -{' '}
+                          {episode.title}
+                        </div>
+                        <p className="text-gray-700" style={{ lineClamp: 1 }}>
+                          {episode.data.overview}
+                        </p>
                       </div>
-                      <p className="text-gray-700" style={{ lineClamp: 1 }}>
-                        {episode.data.overview}
-                      </p>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
